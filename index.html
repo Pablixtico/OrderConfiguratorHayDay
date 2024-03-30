@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('campo.jpg'); /* Cambia 'campo.jpg' por la ruta de tu imagen de fondo */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 0;
+        }
+
+        #container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        
+
+
+        #buttonsContainer {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 60px;
+            
+        }
+
+        .button {
+            background-color: #ffa500; /* Color naranja para los botones */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #ff8c00; /* Color naranja más oscuro al pasar el ratón */
+        }
+
+        #clearButton {
+            background-color: #ff6347; /* Color rojo para el botón Clear */
+        }
+
+        #listContainer {
+            background-color: rgba(255, 255, 255, 0.7); /* Fondo semitransparente blanco para el contenedor de la lista */
+            padding: 10px;
+            border-radius: 10px;
+            width: 100%;
+            max-height: calc(100vh - 200px); /* Ajustar altura máxima de la lista */
+            overflow-y: scroll; /* Habilitar desplazamiento vertical si la lista es muy larga */
+            height: 100%;
+        }
+
+        #ingredientList {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        ::-webkit-scrollbar-thumb {
+        background-color: #8d8b8bd0;
+        border-radius: 20px;
+        border: 6px solid transparent;
+        background-clip: content-box;
+        }
+
+        #ingredientList li {
+            margin-bottom: 10px; /* Mayor distancia entre los elementos de la lista */
+            border: 2px solid transparent; /* Bordes transparentes por defecto */
+            border-radius: 5px;
+            padding: 5px;
+        }
+
+        #ingredientList li.wheat-highlight {
+            border-color: green; /* Borde verde para resaltar los wheat */
+        }
+
+
+
+        #number{
+            border-radius: 10px;
+            font-size: 15px;
+        }
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none;
+}
+
+.button-number{
+    height: 100%;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.button-number button{
+    font-family: 'Times New Roman', Times, serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 0;
+    background-color: #ff8c00;
+    color: white;
+    aspect-ratio: 1/1;
+    font-size: 15px;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    border: 1px solid #ff8c00;
+    transition: 300ms ease;
+    cursor: pointer;
+}
+#number{
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.button-number button:hover{
+    background-color: white;
+    color: #ff8c00;
+}
+
+.counter{
+    display: flex;
+    gap: 5px;
+    
+}
+
+#counters{
+    display: flex;
+    gap: 15px;
+}
+
+p:nth-last-child(1){
+}
+
+
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="counters">
+            <!-- <div class="counter"><p>Trigo =</p><p id="counterTrigo">0</p></div>
+            <div class="counter"><p>Maiz =</p><p id="counterTrigo">0</p></div>
+            <div class="counter"><p>Huevos =</p><p id="counterTrigo">0</p></div>
+            <div class="counter"><p>Bacon =</p><p id="counterTrigo">0</p></div> -->
+        </div>
+        <div id="buttonsContainer">
+            <!-- <button class="button" onclick="addIngredient('NATA')">NATA</button>
+            <button class="button" onclick="addIngredient('LECHE')">LECHE</button>
+            <button class="button" onclick="addIngredient('PIENSO DE VACA')">PIENSO DE VACA</button>
+            <button class="button" onclick="addIngredient('PIENSO DE GALLINA')">PIENSO DE GALLINA</button>
+            <button class="button" onclick="addIngredient('PIENSO PARA CERDO')">PIENSO DE GALLINA</button>
+            <button class="button" onclick="addIngredient('PAN DE MAIZ')">PAN DE MAIZ</button>
+            <button class="button" onclick="addIngredient('HUEVO')">HUEVO</button>
+            <button class="button" onclick="addIngredient('GALLETA')">GALLETA</button>
+            <button class="button" onclick="addIngredient('AZUCAR MORENO')">AZUCAR MORENO</button>
+            <button class="button" onclick="addIngredient('AZUCAR BLANCO')">AZUCAR BLANCO</button>
+            <button class="button" onclick="addIngredient('PANCAKE')">PANCAKE</button>
+            <button class="button" onclick="addIngredient('PALOMAS')">PALOMAS</button>
+            <button class="button" onclick="addIngredient('PALOMAS DE MANTECA')">PALOMAS DE MANTECA</button>
+            <button class="button" onclick="addIngredient('PALOMAS DE MIEL')">PALOMAS DE MIEL</button>
+            <button class="button" onclick="addIngredient('PALOMAS DE CHOCOLATE')">PALOMAS DE CHOCOLATE</button>
+            <button class="button" onclick="addIngredient('APERITIVO SALADO')">APERITIVO SALADO</button>
+            <button class="button" onclick="addIngredient('HUEVO FRITO')">HUEVO FRITO</button> -->
+            <div class="button-number"><button onclick="minus()">-</button><input type="number" id="number" value="1" min="1"><button onclick="more()">+</button></div>
+            <button id="adddiv" class="button" onclick="adddiv()">Añadir pedido</button>
+            <button id="clearButton" class="button" onclick="clearAllIngredients()">Clear All</button>
+        </div>
+        <div id="listContainer">
+            <ul id="ingredientList">
+                
+            </ul>
+        </div>
+    </div>
+    <script>
+
+var ingredientsMap = {
+                    "NATA": { "LECHE": 1 },
+                    "LECHE": { "PIENSO DE VACA": 1 },
+                    "PIENSO DE VACA": { "MAIZ": 1, "SOJA": 2 },
+                    "PIENSO DE GALLINA": { "TRIGO": 2, "MAIZ": 1 },
+                    "PIENSO PARA CERDO": { "ZANAHORIA": 2, "SOJA": 1 },
+                    "PAN DE MAIZ": { "MAIZ": 2, "HUEVO": 2 },
+                    "HUEVO": { "PIENSO DE GALLINA": 1 },
+                    "GALLETA": { "TRIGO": 2, "AZUCAR MORENO": 1, "HUEVO": 2 },
+                    "AZUCAR MORENO": { "CAÑA DE AZUCAR": 1 },
+                    "AZUCAR BLANCO": { "CAÑA DE AZUCAR": 2 },
+                    "PANCAKE": {"HUEVO": 3, "AZUCAR MORENO": 1},
+                    "PALOMAS": {"MAIZ": 2},
+                    "PALOMAS DE MANTECA": {"MAIZ": 2, "MANTECA": 1},
+                    "PALOMAS DE CHILE": {"MAIZ": 2, "CHILE": 2},
+                    "PALOMAS DE MIEL": {"MAIZ": 2, "MIEL": 2},
+                    "PALOMAS DE CHOCOLATE": {"MAIZ": 2, "CACAO": 2},
+                    "HUEVO FRITO": {"HUEVO": 4, "BACON": 2},
+                    "BACON": {"PIENSO PARA CERDO": 1},
+                    "APERITIVO SALADO": {"MAIZ": 2, "SESAMO": 1, "CACAHUETE": 1}
+                }
+
+        window.onload = event => {
+            let llaves = Object.keys(ingredientsMap)
+            
+            llaves.forEach(element => {
+                let button = document.createElement("button")
+                button.textContent = element;
+                button.classList.add("button")
+                button.addEventListener("click", (e) => {
+                    addIngredient(element)
+                })
+                document.getElementById("buttonsContainer").prepend(button)
+            })
+
+        }
+        
+        var counter = 1;
+        
+            // Función para añadir ingredientes a la lista
+
+            function more(){
+                let value = document.getElementById("number").value
+                document.getElementById("number").value = parseInt(value) + 1; 
+            }
+
+            function minus(){
+                let value = document.getElementById("number").value
+                if(parseInt(value) - 1 == 0){
+                    alert("hijo de puta")
+                    return
+
+                }
+                document.getElementById("number").value = parseInt(value) - 1; 
+
+
+            }
+
+            function addIngredient(ingredient, index, cant) {
+                cant==null?cant=document.getElementById("number").value:cant;
+                    if(index == null){
+                        additem(ingredient + " x" + cant, -1)
+                    }
+                    index==null?index=0:index;
+
+                let ingrediente = ingredientsMap[ingredient]
+                let keys = Object.keys(ingrediente)
+
+                    keys.forEach(element => {
+                        if(ingredientsMap[element] == undefined){
+                            additem(element + " x" + ingrediente[element]*cant, index)
+                            return;
+                        } else{
+                            additem(element + " x" + ingrediente[element]*cant, index, true)
+                            addIngredient(element, index = index + 1, ingrediente[element]*cant);
+                        }
+                    })
+                }
+
+            function clearAllIngredients(){
+                let lista = Array.from(document.querySelectorAll(".listitem"))
+                lista.forEach(element => {
+                        element.remove()
+
+                })
+                
+            }
+
+            function additem(i, index, solid){
+                let element = document.createElement("li")
+
+                if(index < 0){
+                    element.style.border = "1px solid black"
+                    element.style.fontWeight = "bold";
+                }
+
+                if(solid){
+                    element.style.fontWeight = "bold";
+                }
+
+                element.classList.add("listitem")
+                console.log(index)
+                for(let x = 0; x<index; x++){
+                    element.textContent += "--";
+                }
+
+                element.textContent += "> " + i;
+                
+                document.getElementById("ingredientList").append(element)
+            }
+
+            function adddiv(){
+                let element = document.createElement("li")
+                element.setAttribute("cut", 1)
+                element.style.display = "flex"
+                element.style.gap = "20px"
+                element.style.alignItems = "center"
+                let element2 = document.createElement("input")
+                element2.maxLength = "20"
+                let element3 = document.createElement("button")
+                element3.addEventListener("click", (e) => {remove(e)})
+                element3.style.backgroundColor = "transparent"
+                element3.style.padding = "0"
+                element3.textContent = "x"
+                element3.style.border = "0"
+                element3.type = "checkbox"
+                element3.style.fontSize = "30px"
+                element3.style.aspectRatio = "1/1"
+                element3.style.minWidth = "30px"
+                element3.style
+                element2.value = "List " + counter 
+                counter++;
+                element2.style.border = "0"
+                element2.style.fontSize = "30px"
+                element2.style.fontWeight = "bold"
+                element2.style.color = "light-red"
+                element.style.borderBottom = "2px solid black"
+                element.append(element3)
+                element.append(element2)
+                document.getElementById("ingredientList").append(element);
+                
+            }
+
+            function remove(e){
+                while(e.target.parentNode.nextSibling != null){
+                    if(!e.target.parentNode.nextSibling.hasAttribute("cut")){
+                        e.target.parentNode.nextSibling.remove()
+                    }else{
+                        e.target.parentNode.remove()
+                        break;
+                        }
+                    
+                }
+                e.target.parentNode.remove()
+            }
+
+    </script>
+</body>
+</html>
